@@ -28,47 +28,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-
+# Load data
 df = pd.read_csv("student_scores.csv")
-print("First 10 rows:")
-print(df.head(10))
 
-
+# Graph 1: Actual data
 plt.scatter(df['Hours'], df['Scores'])
 plt.xlabel('Hours Studied')
 plt.ylabel('Scores')
+plt.title("Actual Data")
 plt.show()
 
+# Prepare data
+X = df[['Hours']]
+y = df['Scores']
 
-x = df[['Hours']]  
-y = df['Scores']   
+# Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-
-X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-
-
+# Train model
 model = LinearRegression()
 model.fit(X_train, y_train)
 
+# Prediction
+pred = model.predict(X_test)
+print("Predicted:", pred[0])
 
-sample_pred = model.predict(X_test.iloc[0].values.reshape(1,1))
-print(f"Predicted score for first test sample: {sample_pred[0]}")
-
-
+# Graph 2: Regression line
 plt.scatter(df['Hours'], df['Scores'])
-plt.plot(x, model.predict(x), color='red') 
+plt.plot(X, model.predict(X))
 plt.xlabel('Hours Studied')
 plt.ylabel('Scores')
+plt.title("Regression Line")
 plt.show()
-
-
-y_pred = model.predict(X_test)
-print("Mean Absolute Error (MAE):", mean_absolute_error(y_test, y_pred))
-print("Mean Squared Error (MSE):", mean_squared_error(y_test, y_pred))
-print("R² Score:", r2_score(y_test, y_pred))
-  
 */
 ```
 
